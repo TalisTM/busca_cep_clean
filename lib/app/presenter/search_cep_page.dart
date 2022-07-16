@@ -20,6 +20,7 @@ class _SearchCepPageState extends State<SearchCepPage> {
 
   final SearchCepStore store = Modular.get<SearchCepStore>();
 
+  final TextEditingController controller = TextEditingController();
   var maskFormatter = MaskTextInputFormatter(mask: '##.###-###', filter: { "#": RegExp(r'[0-9]') });
 
   @override
@@ -55,6 +56,7 @@ class _SearchCepPageState extends State<SearchCepPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 20, bottom: 20),
                       child: TextField(
+                        controller: controller,
                         onChanged: store.setSearchCep,
                         inputFormatters: [maskFormatter],
                         keyboardType: TextInputType.number,
@@ -64,10 +66,18 @@ class _SearchCepPageState extends State<SearchCepPage> {
                           fontWeight: FontWeight.w700
                         ),
                         decoration: InputDecoration(
-                          suffixIcon: Icon(
-                            Icons.pin_drop_outlined,
-                            color: Theme.of(context).primaryColor,
-                          ),
+                          suffixIcon: store.cep.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
+                                onPressed: () {
+                                  controller.clear();
+                                  store.setSearchCep("");
+                                },
+                              )
+                            : Icon(
+                              Icons.pin_drop_outlined,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
