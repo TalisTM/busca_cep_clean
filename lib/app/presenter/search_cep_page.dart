@@ -40,69 +40,69 @@ class _SearchCepPageState extends State<SearchCepPage> {
           ),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Observer(
-            builder: (context) {
-              return Container(
-                constraints: BoxConstraints(
-                  minHeight: store.state is SuccessState
-                    ? 0
-                    : MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight!
-                ),
+        body: LayoutBuilder(
+          builder: (context, contraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                constraints: BoxConstraints(minHeight: contraints.maxHeight),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: TextField(
-                        controller: controller,
-                        onChanged: store.setSearchCep,
-                        inputFormatters: [maskFormatter],
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.7),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700
-                        ),
-                        decoration: InputDecoration(
-                          suffixIcon: store.cep.isNotEmpty
-                            ? IconButton(
-                                icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
-                                onPressed: () {
-                                  controller.clear();
-                                  store.setSearchCep("");
-                                },
-                              )
-                            : Icon(
-                              Icons.pin_drop_outlined,
-                              color: Theme.of(context).primaryColor,
+                    Observer(
+                      builder: (context) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 20, bottom: 20),
+                          child: TextField(
+                            controller: controller,
+                            onChanged: store.setSearchCep,
+                            inputFormatters: [maskFormatter],
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700
                             ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 2,
-                            )
+                            decoration: InputDecoration(
+                              suffixIcon: store.cep.isNotEmpty
+                                ? IconButton(
+                                    icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
+                                    onPressed: () {
+                                      controller.clear();
+                                      store.setSearchCep("");
+                                    },
+                                  )
+                                : Icon(
+                                  Icons.pin_drop_outlined,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor,
+                                  width: 2,
+                                )
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor,
+                                  width: 2
+                                )
+                              ),
+                              labelText: "Digite o CEP",
+                              hintText: "Ex: 01034-030",
+                              labelStyle: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700
+                              ),
+                            ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 2
-                            )
-                          ),
-                          labelText: "Digite o CEP",
-                          hintText: "Ex: 01034-030",
-                          labelStyle: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700
-                          ),
-                        ),
-                      ),
+                        );
+                      }
                     ),
-                    Builder(
+                    Observer(
                       builder: (_) {
                         var state = store.state;
                   
@@ -125,9 +125,9 @@ class _SearchCepPageState extends State<SearchCepPage> {
                     const SizedBox()
                   ],
                 ),
-              );
-            }
-          ),
+              )
+            );
+          }
         )
       ),
     );
